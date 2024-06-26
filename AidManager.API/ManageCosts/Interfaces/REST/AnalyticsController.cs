@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AidManager.API.ManageCosts.Interfaces.REST;
 
 [ApiController]
-[Route("api/v1/[controller]")]
+[Route("api/v1/[controller]/{projectId}")]
 [Produces(MediaTypeNames.Application.Json)]
 public class AnalyticsController(IAnalyticCommandService analyticCommandService, IAnalyticQueryService analyticQueryService): ControllerBase
 {
@@ -26,10 +26,10 @@ public class AnalyticsController(IAnalyticCommandService analyticCommandService,
         return Ok(resource);
     }
     [HttpGet]
-    public async Task<IEnumerable<Analytic>> GetAllAnalytics()
+    public async Task<IEnumerable<Analytic>> GetAllAnalytics(int projectId)
     {
         Console.WriteLine("Get All Analytics called");
-        var getAllAnalyticsQuery = new GetAllAnalytics();
+        var getAllAnalyticsQuery = new GetAllAnalytics(projectId);
         Console.WriteLine("Query Created");
         var result = await analyticQueryService.Handle(getAllAnalyticsQuery);
         Console.WriteLine("Query Handled");
@@ -37,17 +37,17 @@ public class AnalyticsController(IAnalyticCommandService analyticCommandService,
     }
     
     [HttpPost]
-    public async Task<ActionResult> CreateAnalytic([FromBody] CreateAnalyticResource resource)
+    public async Task<ActionResult> CreateAnalytic(int projectId,[FromBody] CreateAnalyticResource resource)
     {
         Console.WriteLine("Create Analytic called");
-        var createAnalyticCommand = CreateAnalyticCommandFromResourceAssembler.ToCommandFromResource(resource);
+        var createAnalyticCommand = CreateAnalyticCommandFromResourceAssembler.ToCommandFromResource(resource, projectId);
         Console.WriteLine("Command Created");
         var result = await analyticCommandService.Handle(createAnalyticCommand);
         
-        var analyticById = this.GetAnalyticById(result.Id);
-        Console.WriteLine("Analytic By Id called" + analyticById.Result.ToString());
+        var analyticById = GetAnalyticById(result.Id);
+        Console.WriteLine("Analytic By Id called" + analyticById.Result);
         
-        return CreatedAtAction(nameof(GetAnalyticById), new { id = result.Id },
+        return CreatedAtAction(nameof(GetAnalyticById), new {projectId = projectId, id = result.Id },
             AnalyticResourceFromEntityAssembler.ToResourceFromEntity(result));
     }
     [HttpPut("{id}")]

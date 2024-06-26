@@ -6,4 +6,6 @@ public interface IAnalyticRepository : IBaseRepository<Analytic>
 {
     public Task<Analytic> CreateAnalytic(Analytic entity);
     public Task<IEnumerable<Analytic>> FindAllAsync();
+    Task<List<Analytic>> FindByProjectIdAsync(int projectId); // New method
+
 }

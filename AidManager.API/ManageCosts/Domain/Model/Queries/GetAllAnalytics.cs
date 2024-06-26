@@ -1,3 +1,3 @@
 ﻿namespace AidManager.API.ManageCosts.Domain.Model.Queries;
 
-public record GetAllAnalytics();
+public record GetAllAnalytics(int ProjectId);

@@ -14,8 +14,5 @@ public class ProjectQueryService(IProjectRepository projectRepository) :IProject
         
     }
 
-    public async Task<IEnumerable<Project>> Handle(GetAllProjectsByCompanyIdQuery query)
-    {
-        return await projectRepository.GetAllProjectsByCompanyId(query.CompanyId);
-    }
+  
 }

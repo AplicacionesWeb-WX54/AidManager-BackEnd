@@ -12,6 +12,8 @@ public class Analytic
     public double Progress { get; private set; }
     public int[] Current { get; private set; }
     public int[] Expected { get; private set; }
+    
+    public int ProjectId { get; private set; }
 
     protected Analytic()
     {
@@ -30,6 +32,7 @@ public class Analytic
         this.Progress = command.Progress;
         this.Current = command.Current;
         this.Expected = command.Expected;
+        this.ProjectId = command.ProjectId;
     }
     public void UpdateAnalytic(UpdateAnalyticCommand command)
     {

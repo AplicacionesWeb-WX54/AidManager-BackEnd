@@ -13,7 +13,7 @@ public class AnalyticCommandService(IAnalyticRepository analyticRepository, IUni
         Console.WriteLine("Command service Called");
         var analytic = new Analytic(command);
 
-        analyticRepository.CreateAnalytic(analytic);
+        await analyticRepository.CreateAnalytic(analytic);
         Console.WriteLine("Analytic added to repository");
         await unitOfWork.CompleteAsync();
         Console.WriteLine("unit of work completed");

@@ -31,11 +31,19 @@ public class AnalyticRepository: BaseRepository<Analytic>, IAnalyticRepository
         }
     }
     
-    public Task AddAsync(Analytic entity)
+    
+    
+    public Task<List<Analytic>> GetAllAnalytics(int projectId)
     {
-        Console.WriteLine("adding analytic to repository");
-        return base.AddAsync(entity);
+        return Context.Set<Analytic>().Where(f => f.ProjectId == projectId).ToListAsync();
+
     }
+    
+    public Task<List<Analytic>> FindByProjectIdAsync(int projectId)
+    {
+        return Context.Set<Analytic>().Where(f => f.ProjectId == projectId).ToListAsync();
+    }
+    
 
     public async Task<IEnumerable<Analytic>> FindAllAsync()
     {
